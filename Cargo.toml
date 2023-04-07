@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "bulk_transfer",
+    "psp22",
+    "psp34",
+]
