@@ -9,6 +9,7 @@ pub mod my_psp34 {
     use openbrush::contracts::psp34::extensions::mintable::*;
     use openbrush::traits::Storage;
     use openbrush::traits::String;
+    use ink::prelude::vec::Vec;
 
     #[ink(storage)]
     #[derive(Default, Storage)]
@@ -39,6 +40,24 @@ pub mod my_psp34 {
             );
             _instance._set_attribute(collection_id, String::from("symbol"), String::from("MPSP"));
             _instance
+        }
+
+        #[ink(message)]
+        // #[modifiers(only_owner)]
+        pub fn bulk_approve(
+            &mut self,
+            operator: AccountId,
+            token_id: Vec<Id>,
+            approved: bool,
+        ) -> Result<(), PSP34Error> {
+            for index in 0..token_id.len() {
+                self.approve(
+                    operator, 
+                    Some(token_id[index].clone()), 
+                    approved
+                )?;
+            }
+            Ok(())
         }
     }
 }
